@@ -1,85 +1,45 @@
 package com.myGame.renderEngine;
 
-import static org.lwjgl.glfw.Callbacks.*;
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import org.lwjgl.opengl.GL11;
 
-import org.lwjgl.glfw.*;
+import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.*;
-import org.lwjgl.util.Display;
-
-import java.nio.ByteBuffer;
 
 /**
  * Created by user on 16.09.15.
  */
 public class DisplayMenager {
 
-
-    // We need to strongly reference callback instances.
-    private static GLFWErrorCallback errorCallback;
-    private static GLFWKeyCallback   keyCallback;
-
-    private static final int WIDTH = 300;
-    private static final int HEIGHT = 300;
+    private static final int WIDTH = 680;
+    private static final int HEIGHT = 460;
+    private static final int FPS_CAP = 120;
     // The window handle
-    private static long window;
 
     public static void  createDisplay(){
-//
-//        String libopencv_java = "@lib/natives/";
-//        System.load(libopencv_java);
-        // Setup an error callback. The default implementation
-        // will print the error message in System.err.
-        glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
 
-//        // Initialize GLFW. Most GLFW functions will not work before doing this.
-//        if ( glfwInit() != GL11.GL_TRUE )
-//            throw new IllegalStateException("Unable to initialize GLFW");
-//
-//        // Configure our window
-//        glfwDefaultWindowHints(); // optional, the current window hints are already the default
-//        glfwWindowHint(GLFW_VISIBLE, GL_FALSE); // the window will stay hidden after creation
-//        glfwWindowHint(GLFW_RESIZABLE, GL_TRUE); // the window will be resizable
-//
-//        int WIDTH = 300;
-//        int HEIGHT = 300;
-//
-//        // Create the window
-//        window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World!", NULL, NULL);
-//        if ( window == NULL )
-//            throw new RuntimeException("Failed to create the GLFW window");
-//
-//        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-//        glfwSetKeyCallback(window, keyCallback = new GLFWKeyCallback() {
-//            @Override
-//            public void invoke(long window, int key, int scancode, int action, int mods) {
-//                if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-//                    glfwSetWindowShouldClose(window, GL_TRUE); // We will detect this in our rendering loop
-//            }
-//        });
-//
-//        // Get the resolution of the primary monitor
-//        ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-//        // Center our window
-//        glfwSetWindowPos(
-//                window,
-//                (GLFWvidmode.width(vidmode) - WIDTH) / 2,
-//                (GLFWvidmode.height(vidmode) - HEIGHT) / 2
-//        );
-//
-//        // Make the OpenGL context current
-//        glfwMakeContextCurrent(window);
-//        // Enable v-sync
-//        glfwSwapInterval(1);
-//
-//        // Make the window visible
-//        glfwShowWindow(window);
+       // System.setProperty("org.lwjgl.librarypath", "lib/natives");
 
+        ContextAttribs attribs = new ContextAttribs(3,2);
+        attribs.withForwardCompatible(true);
+        attribs.withProfileCore(true);
+
+        try {
+            Display.setDisplayMode(new DisplayMode(WIDTH,HEIGHT));
+            Display.create(new PixelFormat(), attribs);
+            Display.setTitle("myDisplay");
+        } catch (LWJGLException e){
+            e.printStackTrace();
+        }
+
+        GL11.glViewport(0, 0, WIDTH, HEIGHT);
     }
 
-    public static void  updateDisplay(){}
+    public static void  updateDisplay(){
+        Display.sync(FPS_CAP);
+        Display.update();
+    }
 
-    public static void  closeDisplay(){}
+    public static void  closeDisplay(){
+        Display.destroy();
+    }
 }
