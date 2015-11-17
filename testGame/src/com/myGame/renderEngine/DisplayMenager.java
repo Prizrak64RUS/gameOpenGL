@@ -16,12 +16,9 @@ public class DisplayMenager {
     // The window handle
 
     public static void  createDisplay(){
-
-       // System.setProperty("org.lwjgl.librarypath", "lib/natives");
-
-        ContextAttribs attribs = new ContextAttribs(3,2);
-        attribs.withForwardCompatible(true);
-        attribs.withProfileCore(true);
+        ContextAttribs attribs = new ContextAttribs(3,2)
+        .withForwardCompatible(true)
+        .withProfileCore(true);
 
         try {
             Display.setDisplayMode(new DisplayMode(WIDTH,HEIGHT));
