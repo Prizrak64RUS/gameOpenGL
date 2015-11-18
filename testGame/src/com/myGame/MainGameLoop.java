@@ -4,6 +4,8 @@ import com.myGame.entities.Camera;
 import com.myGame.entities.Entity;
 import com.myGame.entities.Light;
 import com.myGame.models.TexturedModel;
+import com.myGame.objConverter.ModelData;
+import com.myGame.objConverter.OBJFileLoader;
 import com.myGame.renderEngine.*;
 import com.myGame.models.RawModel;
 import com.myGame.shaders.StaticShader;
@@ -24,7 +26,10 @@ public class MainGameLoop {
         DisplayMenager.createDisplay();
         Loader loader = new Loader();
 
-        RawModel model = OBJLoader.loadObjModel("tree",loader);
+        ModelData data = OBJFileLoader.loadOBJ("tree");
+
+        RawModel model = loader.loadToVAO(data.getVertices(),data.getTextureCoords(),
+                data.getNormals(), data.getIndices());
 
         TexturedModel staticModel = getTexturedModel("tree","tree",loader);
         TexturedModel grass = getTexturedModel("grassModel","grassTexture",loader);
@@ -75,7 +80,12 @@ public class MainGameLoop {
 
     private TexturedModel getTexturedModel(String modelName, String textureName, Loader loader ){
 
-        return  new TexturedModel((OBJLoader.loadObjModel(modelName,loader)),
+        ModelData data = OBJFileLoader.loadOBJ(modelName);
+
+        RawModel model = loader.loadToVAO(data.getVertices(),data.getTextureCoords(),
+                data.getNormals(), data.getIndices());
+
+        return  new TexturedModel(model,
                 new ModelTexture(loader.loadTexture(textureName)));
 
     }
