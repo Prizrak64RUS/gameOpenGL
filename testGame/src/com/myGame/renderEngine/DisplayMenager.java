@@ -1,5 +1,6 @@
 package com.myGame.renderEngine;
 
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
 import org.lwjgl.LWJGLException;
@@ -13,6 +14,9 @@ public class DisplayMenager {
     private static final int WIDTH = 640;
     private static final int HEIGHT = 480;
     private static final int FPS_CAP = 120;
+
+    private static long lastFrameTime;
+    private static float delta;
     // The window handle
 
     public static void  createDisplay(){
@@ -29,14 +33,26 @@ public class DisplayMenager {
         }
 
         GL11.glViewport(0, 0, WIDTH, HEIGHT);
+        lastFrameTime = getCurrentTime();
     }
 
     public static void  updateDisplay(){
         Display.sync(FPS_CAP);
         Display.update();
+        long currentFrameTime = getCurrentTime();
+        delta = (currentFrameTime - lastFrameTime)/1000f;
+        lastFrameTime=currentFrameTime;
+    }
+
+    public static float getFrameTimeSeconds(){
+        return delta;
     }
 
     public static void  closeDisplay(){
         Display.destroy();
+    }
+
+    private static long getCurrentTime(){
+        return Sys.getTime()*1000/Sys.getTimerResolution();
     }
 }

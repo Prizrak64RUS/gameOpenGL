@@ -3,14 +3,12 @@ package com.myGame.entities;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
-/**
- * Created by user on 12.11.2015.
- */
+
 public class Camera {
 
-    private Vector3f position = new Vector3f(0,0,0);
-    private float pitch;
-    private float yaw;
+    private Vector3f position = new Vector3f(100,35,50);
+    private float pitch=10;
+    private float yaw = 0;
     private float roll;
 
     public Camera(){
@@ -18,24 +16,7 @@ public class Camera {
     }
 
     public void move(){
-        if (Keyboard.isKeyDown(Keyboard.KEY_W)){
-            position.z-=0.2f;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_S)){
-            position.z+=0.2f;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_D)){
-            position.x+=0.2f;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_A)){
-            position.x-=0.2f;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
-            position.y+=0.02f;
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-            position.y-=0.02f;
-        }
+
     }
 
     public Vector3f getPosition() {
